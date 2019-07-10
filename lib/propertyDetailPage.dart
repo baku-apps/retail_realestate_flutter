@@ -4,6 +4,8 @@ import 'package:retail_realestate_flutter/models/propertyDetails.dart';
 import 'package:retail_realestate_flutter/propertyGeneralInfo.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import 'ExpandableWidget.dart';
+
 class PropertyDetailsPage extends StatelessWidget {
   final PropertyDetails propertyDetails;
   const PropertyDetailsPage({Key key, this.propertyDetails}) : super(key: key);
@@ -61,16 +63,25 @@ class PropertyDetailsPage extends StatelessWidget {
     List<Widget> _makeFeaturesColumns(PropertyDetails details) {
       var featureList = List<Widget>();
 
-      details.featuresMap.forEach((cat, f) {
-        featureList.add(Text(cat));
-        featureList.add(_makeDivider(const EdgeInsets.symmetric(vertical: 4.0)));
+      details.featuresMap.forEach((categotyTitle, feature) {
+        featureList.add(const SizedBox(height: 4.0));
+        featureList
+            .add(Text(categotyTitle, style: Theme.of(context).textTheme.title));
+        featureList
+            .add(_makeDivider(const EdgeInsets.symmetric(vertical: 8.0)));
 
-        f.forEach((tit, val) {
-
-          featureList.add(Text(tit));
-          featureList.add(const SizedBox(height: 4.0));
-          featureList.add(Text(val));
-          featureList.add(_makeDivider(const EdgeInsets.symmetric(vertical: 4.0)));
+        feature.forEach((title, value) {
+          featureList.add(Text(
+            title,
+            style: Theme.of(context).textTheme.caption,
+          ));
+          featureList.add(const SizedBox(height: 8.0));
+          featureList.add(Text(
+            value,
+            style: Theme.of(context).textTheme.body1,
+          ));
+          featureList
+              .add(_makeDivider(const EdgeInsets.symmetric(vertical: 8.0)));
         });
       });
 
@@ -82,10 +93,6 @@ class PropertyDetailsPage extends StatelessWidget {
       body: Container(
         child: ListView(shrinkWrap: true, children: <Widget>[
           _makeImageCarousel(propertyDetails.images),
-          Divider(
-            color: Colors.yellowAccent,
-            height: 1,
-          ),
           Container(
               padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
               child: PropertyGeneralInfo(property: propertyDetails.general)),
@@ -99,30 +106,44 @@ class PropertyDetailsPage extends StatelessWidget {
                     "Omschrijving",
                     style: Theme.of(context).textTheme.headline,
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    propertyDetails.description,
-                    style: Theme.of(context).textTheme.body1,
-                    textAlign: TextAlign.justify,
-                  )
+                  const SizedBox(height: 4.0),
+                  ExapandableWidget(
+                      maxHeight: 100.0,
+                      expandText: "Lees volledige omschrijving",
+                      shrinkText: "Verklein omschrijving",
+                      child: Text(
+                        propertyDetails.description,
+                        overflow: TextOverflow.fade,
+                        softWrap: true,
+                        style: Theme.of(context).textTheme.body1,
+                        textAlign: TextAlign.justify,
+                      ))
                 ],
               )),
+          _makeDivider(EdgeInsets.symmetric(vertical: 8.0)),
           Container(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Column(
+                // mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     "Kenmerken",
-                    style: Theme.of(context).textTheme.headline,
+                    style: Theme.of(context).textTheme.headline, 
                   ),
                   const SizedBox(height: 8.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                    children: _makeFeaturesColumns(propertyDetails),
-                  )
+                  ExapandableWidget(
+                    maxHeight: 105.0,
+                    expandText: "Bekijk alle kenmerken",
+                    shrinkText: "Minder kenmerken",
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: _makeFeaturesColumns(propertyDetails),
+                    ),
+                  ),
                 ],
               )),
         ]),

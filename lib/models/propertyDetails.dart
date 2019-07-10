@@ -46,7 +46,7 @@ class PropertyDetails {
 
   Map<String, Map<String, String>> _toDictionary(PropertyDetails details) {
     var featureMap = {
-      'Overdarcht': {
+      'Overdracht': {
         'Prijs': details.general.price.toString(),
         'Status': details.features.status,
         'Oplevering': details.features.delivery
@@ -61,7 +61,7 @@ class PropertyDetails {
         'Vloeroppervakte': details.features.floorArea.toString() + 'm2',
         'Verkoopoppervakte': details.features.salesArea.toString() + 'm2',
       },
-      'Indeling': {'Verdiepingen': details.features.toString()},
+      'Indeling': {'Verdiepingen': details.features.storys.toString() + ' verdiepingen'},
       'Omgeving': {'Ligging': details.features.location}
     };
     return featureMap;
@@ -75,11 +75,11 @@ class PropertyFeatures {
   String constructionType;
   int buildYear;
 
-  double totalArea;
-  double floorArea;
-  double salesArea;
+  int totalArea;
+  int floorArea;
+  int salesArea;
 
-  double storys;
+  int storys;
 
   String location;
 
