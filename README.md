@@ -1,6 +1,15 @@
 # retail_realestate_flutter
 
-A new Flutter project.
+A simple retail realestate app
+
+We have not included the repository (json file) due to sensitive content. Will create an own backend with mock data soon!
+
+## Features
+
+- List of properties
+- "Automatic" deserialization of json in Dart
+- Details page
+- Image carousel
 
 ## Getting Started
 
