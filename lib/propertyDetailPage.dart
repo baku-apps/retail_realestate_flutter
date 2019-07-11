@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:retail_realestate_flutter/models/propertyDetails.dart';
 import 'package:retail_realestate_flutter/propertyGeneralInfo.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'ExpandableWidget.dart';
 
@@ -88,6 +89,9 @@ class PropertyDetailsPage extends StatelessWidget {
       return featureList;
     }
 
+    final CameraPosition vegasPosition =
+        CameraPosition(target: LatLng(36.0953103, -115.1992098), zoom: 10);
+
     return Scaffold(
       appBar: topAppBar,
       body: Container(
@@ -124,13 +128,12 @@ class PropertyDetailsPage extends StatelessWidget {
           Container(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Column(
-                // mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     "Kenmerken",
-                    style: Theme.of(context).textTheme.headline, 
+                    style: Theme.of(context).textTheme.headline,
                   ),
                   const SizedBox(height: 8.0),
                   ExapandableWidget(
@@ -146,6 +149,25 @@ class PropertyDetailsPage extends StatelessWidget {
                   ),
                 ],
               )),
+          _makeDivider(EdgeInsets.symmetric(vertical: 8.0)),
+          Container(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Kaart",
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Container(
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        initialCameraPosition: vegasPosition,
+                      ),
+                    )
+                  ]))
         ]),
       ),
     );
