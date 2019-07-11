@@ -108,7 +108,7 @@ class PropertyDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4.0),
                   ExapandableWidget(
-                      maxHeight: 100.0,
+                      maxHeight: 110.0,
                       expandText: "Lees volledige omschrijving",
                       shrinkText: "Verklein omschrijving",
                       child: Text(
@@ -134,7 +134,7 @@ class PropertyDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0),
                   ExapandableWidget(
-                    maxHeight: 105.0,
+                    maxHeight: 115.0,
                     expandText: "Bekijk alle kenmerken",
                     shrinkText: "Minder kenmerken",
                     child: Column(

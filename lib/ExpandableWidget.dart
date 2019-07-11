@@ -6,13 +6,15 @@ class ExapandableWidget extends StatefulWidget {
       this.child,
       this.expandText,
       this.shrinkText,
-      this.maxHeight = 0})
+      this.maxHeight = 0,
+      this.fadeWhenShrink = true})
       : super(key: key);
 
   final String expandText;
   final String shrinkText;
   final double maxHeight;
   final Widget child;
+  final bool fadeWhenShrink;
 
   _ExapandableWidgetState createState() => _ExapandableWidgetState();
 }
@@ -29,26 +31,11 @@ class _ExapandableWidgetState extends State<ExapandableWidget>
   @override
   void initState() {
     super.initState();
-    expandController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 100));
-        
+    expandController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 0));
+
     //get size of widget: https://coflutter.com/flutter/get-size-and-position-of-a-widget-in-flutter/
     WidgetsBinding.instance.addPostFrameCallback(_onBuildCompleted);
-  }
-
-  _onBuildCompleted(_) {
-    _getContainerSize();
-  }
-
-  _getContainerSize() {
-    final RenderBox containerRenderBox =
-        _containerKey.currentContext.findRenderObject();
-
-    final containerSize = containerRenderBox.size;
-
-    setState(() {
-      _containerSize = containerSize;
-    });
   }
 
   ///Setting up the animation
@@ -59,7 +46,7 @@ class _ExapandableWidgetState extends State<ExapandableWidget>
     );
 
     double animationBegin;
-    if (_containerSize.height > 0)
+    if (!_containerSize.isEmpty)
       animationBegin = widget.maxHeight / _containerSize.height;
     else
       animationBegin = 0;
@@ -69,7 +56,7 @@ class _ExapandableWidgetState extends State<ExapandableWidget>
         setState(() {});
       });
 
-      return animation;
+    return animation;
   }
 
   @override
@@ -86,7 +73,31 @@ class _ExapandableWidgetState extends State<ExapandableWidget>
       SizeTransition(
           axisAlignment: -1.0,
           sizeFactor: prepareAnimations(),
-          child: Container(key: _containerKey, child: widget.child)),
+          child: Container(
+              key: _containerKey,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: <Widget>[
+                  widget.child,
+                  Container(
+                    width: double.infinity,
+                    height: isExpanded || !widget.fadeWhenShrink ? 0.0 : widget.maxHeight + 10,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        gradient: LinearGradient(
+                            begin: FractionalOffset.topCenter,
+                            end: FractionalOffset.bottomCenter,
+                            colors: [
+                              Colors.white.withOpacity(0.0),
+                              Colors.white,
+                            ],
+                            stops: [
+                              0.70,  
+                              1                              
+                            ])),
+                  ),
+                ],
+              ))),
       isExpanded
           ? buildFlatButton(context, false)
           : buildFlatButton(context, true)
@@ -107,5 +118,20 @@ class _ExapandableWidgetState extends State<ExapandableWidget>
                 expandController.reverse();
               }
             }));
+  }
+
+  _onBuildCompleted(_) {
+    _getContainerSize();
+  }
+
+  _getContainerSize() {
+    final RenderBox containerRenderBox =
+        _containerKey.currentContext.findRenderObject();
+
+    final containerSize = containerRenderBox.size;
+
+    setState(() {
+      _containerSize = containerSize;
+    });
   }
 }
