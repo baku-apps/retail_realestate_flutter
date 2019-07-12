@@ -31,6 +31,7 @@ class PropertyGeneralInfo extends StatelessWidget {
         Row(
           children: <Widget>[
             Icon(Icons.home),
+            Text(" "),
             Text("Winkelruimte | 89 m2",
                 style: Theme.of(context)
                     .textTheme

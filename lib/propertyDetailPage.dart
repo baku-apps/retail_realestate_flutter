@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:retail_realestate_flutter/helpers/mapHelpers.dart';
 import 'package:retail_realestate_flutter/models/propertyDetails.dart';
 import 'package:retail_realestate_flutter/propertyGeneralInfo.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -29,23 +30,25 @@ class PropertyDetailsPage extends StatelessWidget {
           ),
         );
 
-    _makeImageCarousel(List<String> images) => CarouselSlider(
+    _makeImageCarousel(PropertyDetails details) => CarouselSlider(
           viewportFraction: 1.0,
-          height: MediaQuery.of(context).size.height * 0.33,
-          items: images.map((i) {
+          height: MediaQuery.of(context).size.height * 0.40,
+          items: details.images.map((url) {
             return Builder(builder: (BuildContext context) {
               return Container(
                 color: Colors.grey[300],
                 width: double.infinity,
-                child: CachedNetworkImage(
-                  imageUrl: i,
-                  fit: BoxFit.fitHeight,
-                  placeholder: (context, i) => Icon(
+                child: Hero(
+                    tag: "prop-${details.general.id}",
+                    child: CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.cover,
+                      placeholder: (context, i) => Icon(
                         Icons.broken_image,
                         size: 64,
                       ),
-                  errorWidget: (context, i, error) => new Icon(Icons.error),
-                ),
+                      errorWidget: (context, i, error) => new Icon(Icons.error),
+                    )),
               );
 
               //   return Container(
@@ -89,14 +92,11 @@ class PropertyDetailsPage extends StatelessWidget {
       return featureList;
     }
 
-    final CameraPosition vegasPosition =
-        CameraPosition(target: LatLng(36.0953103, -115.1992098), zoom: 10);
-
     return Scaffold(
       appBar: topAppBar,
       body: Container(
         child: ListView(shrinkWrap: true, children: <Widget>[
-          _makeImageCarousel(propertyDetails.images),
+          _makeImageCarousel(propertyDetails),
           Container(
               padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
               child: PropertyGeneralInfo(property: propertyDetails.general)),
@@ -136,6 +136,7 @@ class PropertyDetailsPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline,
                   ),
                   const SizedBox(height: 8.0),
+                  //TODO: use StatefulBuilder Widget to only update the expansion/shrinking
                   ExapandableWidget(
                     maxHeight: 115.0,
                     expandText: "Bekijk alle kenmerken",
@@ -162,14 +163,87 @@ class PropertyDetailsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8.0),
                     Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 300,
                       child: GoogleMap(
+                        onTap: (loc) => MapHelpers.openMap(
+                            propertyDetails.location[0],
+                            propertyDetails.location[1]),
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(propertyDetails.location[0],
+                                propertyDetails.location[1]),
+                            zoom: 15),
+                        markers: {
+                          Marker(
+                            consumeTapEvents: true,
+                            onTap: () => MapHelpers.openMap(
+                                propertyDetails.location[0],
+                                propertyDetails.location[1]),
+                            markerId: MarkerId(propertyDetails.id),
+                            position: LatLng(propertyDetails.location[0],
+                                propertyDetails.location[1]),
+                            infoWindow: InfoWindow(
+                                title: propertyDetails.general.address),
+                          )
+                        },
+                        tiltGesturesEnabled: false,
+                        zoomGesturesEnabled: false,
+                        scrollGesturesEnabled: false,
+                        indoorViewEnabled: false,
                         mapType: MapType.normal,
-                        initialCameraPosition: vegasPosition,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 25.0),
                   ]))
         ]),
       ),
+      bottomNavigationBar: new Container(
+          height: 60,
+          padding: const EdgeInsets.all(8),
+          //color: Colors.grey,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                decoration: new BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: new BorderRadius.all(Radius.circular(4))),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      color: Colors.black,
+                      child: Icon(Icons.phone, color: Colors.yellow),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      alignment: Alignment.center,
+                      child: Text("06-123456789",
+                          style: Theme.of(context)
+                              .textTheme
+                              .body2
+                              .copyWith(color: Colors.yellow[200], fontSize: 18)),
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
+                child: Text("Stuur bericht",
+                    style: Theme.of(context)
+                        .textTheme
+                        .body2
+                        .copyWith(fontSize: 16, color: Colors.blue[300])),
+              )
+            ],
+          )),
     );
   }
 }

@@ -7,6 +7,7 @@ class PropertyDetails {
   String description;
   List<String> images;
   Property general;
+  List<double> location = List<double>(2);
 
   PropertyFeatures features;
 
@@ -17,11 +18,12 @@ class PropertyDetails {
 
     details.general = property;
 
-    details.id = "1";
+    details.id = "57b5940a5d47a7c079d44468";
     details.description =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris varius maximus enim. Nullam a massa dapibus, aliquam sem vel, tempus mauris. Aliquam in odio dolor. Ut imperdiet, dolor nec semper feugiat, nulla ipsum blandit velit, et scelerisque velit arcu id tellus. Proin quis scelerisque nunc. Donec aliquam lorem sit amet enim rhoncus, posuere pellentesque est sagittis. Maecenas sem orci, condimentum eget tellus eu, semper malesuada arcu. Vestibulum faucibus est lectus, a luctus orci laoreet at. Duis ullamcorper consectetur libero.";
 
     details.images = [
+      "http://storage.googleapis.com/s1media/360p/57b5940a5d47a7c079d44468_17cbaae990ff6da269af0dc023150b9a.JPG",
       "https://www.jasna.sk/fileadmin/_processed_/csm_Shopy_20.7.201700029__1024x683__d5779f6291.jpg",
       "https://www.tenovuscancercare.org.uk/media/372112/blue-shop-front-small-use-only.jpg",
       "https://i1.wp.com/fitzvillafuerte.com/wp-content/uploads/2017/02/sari-sari-store-tips.jpg?fit=484%2C252&ssl=1"
@@ -40,6 +42,8 @@ class PropertyDetails {
         location: "Centrum");
 
     details.featuresMap = details._toDictionary(details);
+
+    details.location = {52.0599228, 4.2286262}.toList();
 
     return details;
   }
@@ -61,7 +65,9 @@ class PropertyDetails {
         'Vloeroppervakte': details.features.floorArea.toString() + 'm2',
         'Verkoopoppervakte': details.features.salesArea.toString() + 'm2',
       },
-      'Indeling': {'Verdiepingen': details.features.storys.toString() + ' verdiepingen'},
+      'Indeling': {
+        'Verdiepingen': details.features.storys.toString() + ' verdiepingen'
+      },
       'Omgeving': {'Ligging': details.features.location}
     };
     return featureMap;

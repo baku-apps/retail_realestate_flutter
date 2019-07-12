@@ -2,19 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:retail_realestate_flutter/propertyDetailPage.dart';
-import 'package:retail_realestate_flutter/propertyDetailWebviewPage.dart';
 import 'package:retail_realestate_flutter/propertyGeneralInfo.dart';
-import 'package:http/http.dart' as http;
 
-import 'package:html/parser.dart'; // Contains HTML parsers to generate a Document object
+// Contains HTML parsers to generate a Document object
 //import 'package:html/dom.dart' as dom; // Contains DOM related classes for extracting data from elements
 
 import 'models/property.dart';
 import 'models/propertyDetails.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class PropertyListPage extends StatefulWidget {
   PropertyListPage({Key key, this.title}) : super(key: key);
@@ -77,7 +75,7 @@ class _PropertyListPageState extends State<PropertyListPage> {
                   child: CircularProgressIndicator(),
                 );
               else
-                return new RetailPropertyItem(property: _properties[index]);
+                return RetailPropertyItem(property: _properties[index]);
             }));
   }
 }
@@ -93,8 +91,11 @@ class RetailPropertyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    timeDilation = 1.5; // 1.0 means normal animation speed.
+
     return InkWell(
         onTap: () => {
+              //Navigator.of(context).push(DetailsPageRoute(_property))
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return PropertyDetailsPage(
                     propertyDetails: PropertyDetails.fake(_property));
@@ -114,28 +115,18 @@ class RetailPropertyItem extends StatelessWidget {
                         child: Stack(
                           alignment: Alignment.center,
                           children: <Widget>[
-                            // Container(
-                            //   width: double.infinity,
-                            //   height: 300,
-                            //   decoration: BoxDecoration(
-                            //     image: DecorationImage(
-                            //       image: NetworkImage(
-                            //           _properties[index].photoUrl),
-                            //       fit: BoxFit.fitWidth,
-                            //     ),
-                            //   ),
-                            // ),
-                            new ClipRRect(
-                                borderRadius: new BorderRadius.circular(4.0),
-                                child: CachedNetworkImage(
-                                  width: double.infinity,
-                                  fit: BoxFit.fitWidth,
-                                  imageUrl: _property.photoUrl,
-                                  placeholder: (context, url) =>
-                                      new CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      new Icon(Icons.error),
-                                )),
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(4.0),
+                                child: Hero(
+                                    tag: "prop-${_property.id}",
+                                    child: CachedNetworkImage(
+                                        width: double.infinity,
+                                        fit: BoxFit.fitWidth,
+                                        imageUrl: _property.photoUrl,
+                                        placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error)))),
                             Positioned(
                                 bottom: 20,
                                 left: 0,
@@ -153,5 +144,18 @@ class RetailPropertyItem extends StatelessWidget {
                 PropertyGeneralInfo(property: _property)
               ],
             )));
+  }
+}
+
+class DetailsPageRoute extends MaterialPageRoute {
+  DetailsPageRoute(Property p)
+      : super(
+            builder: (context) =>
+                PropertyDetailsPage(propertyDetails: PropertyDetails.fake(p)));
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    return FadeTransition(opacity: animation, child: child);
   }
 }
