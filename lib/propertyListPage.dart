@@ -54,7 +54,7 @@ class _PropertyListPageState extends State<PropertyListPage> {
         filterQuality: FilterQuality.high,
         fit: BoxFit.fitWidth,
       ),
-      actions: <Widget>[
+      actions: [
         IconButton(
           icon: Icon(Icons.list),
           onPressed: () {},
