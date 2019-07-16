@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:retail_realestate_flutter/propertyListPage.dart';
 
+import 'propertyMapsListPage.dart';
+
 void main() => {runApp(RetailRealestateApp())};
 
 class RetailRealestateApp extends StatelessWidget {
@@ -11,7 +13,7 @@ class RetailRealestateApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: new ThemeData(primaryColor: Color.fromRGBO(0, 0, 0, 1.0)),
       home: PropertyListPage(title: 'Aanbod'),
-      //home: PropertyDetailsPage(propertyDetails: PropertyDetails.fake()),
+      //home: PropertyMapsListPage(),
     );
   }
 }

@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:retail_realestate_flutter/propertyDetailPage.dart';
 import 'package:retail_realestate_flutter/propertyGeneralInfo.dart';
+import 'package:retail_realestate_flutter/propertyMapsListPage.dart';
+import 'package:retail_realestate_flutter/services/propertyService.dart';
+import 'package:rxdart/rxdart.dart';
 
 // Contains HTML parsers to generate a Document object
 //import 'package:html/dom.dart' as dom; // Contains DOM related classes for extracting data from elements
@@ -26,24 +31,45 @@ class PropertyListPage extends StatefulWidget {
 class _PropertyListPageState extends State<PropertyListPage> {
   List<Property> _properties;
 
-  Future<String> loadAsset() async {
-    return await rootBundle.loadString('repository/localjoe.json');
-  }
+  var propertyService = PropertyService();
+
+  ListView propertiesList;
+  Widget propertiesMaps;
 
   @override
   void initState() {
     super.initState();
 
     //put this in a service, and load for now just json from asset
-    loadAsset().then((jsonString) {
-      List<Map<String, dynamic>> d = List.from(json.decode(jsonString));
-
-      setState(() => _properties = d.map((f) => Property.fromJson(f)).toList());
+    propertyService.fetchPropertiesList().then((properties) {
+      setState(() {
+        _properties = properties.take(5).toList();
+      });
     });
   }
 
+  bool _showList = true;
+
+  Completer<GoogleMapController> _mapsController = Completer();
+  void _onMapCreated() {
+    _mapsController.complete();
+  }
+
+  void _setShowList(bool showList) => setState(() => _showList = showList);
+
+  void _buildMarkers() {}
+
+  Property _propertyCardMap;
+
   @override
   Widget build(BuildContext context) {
+    final propertiesList = ListView.builder(
+        shrinkWrap: true,
+        itemCount: _properties == null ? 0 : _properties.length,
+        itemBuilder: (context, index) {
+          return RetailPropertyItem(property: _properties[index]);
+        });
+
     final topAppBar = AppBar(
       elevation: 0.1,
       centerTitle: true,
@@ -55,28 +81,69 @@ class _PropertyListPageState extends State<PropertyListPage> {
         fit: BoxFit.fitWidth,
       ),
       actions: [
-        IconButton(
-          icon: Icon(Icons.list),
-          onPressed: () {},
-        )
+        IconButton(icon: Icon(Icons.list), onPressed: () => _setShowList(true)),
+        IconButton(icon: Icon(Icons.map), onPressed: () => _setShowList(false))
       ],
     );
+
+    final CameraPosition _initPosition = CameraPosition(
+      target: LatLng(52.0690814, 4.2777256),
+      zoom: 12.73,
+    );
+
+    final Set<Marker> _propertyMarkers = _properties == null
+        ? Set<Marker>()
+        : _properties.map((p) {
+            return Marker(
+                onTap: () {
+                  setState(() => _propertyCardMap = p);
+                },
+                consumeTapEvents: true,
+                markerId: MarkerId(p.id),
+                position: LatLng(p.location[0], p.location[1]));
+          }).toSet();
+
+    propertiesMaps = Container(
+        child: Stack(children: <Widget>[
+      GoogleMap(
+          onTap: (latLang) => setState(() => _propertyCardMap = null),
+          markers: _propertyMarkers,
+          onMapCreated: (controller) => _onMapCreated,
+          mapType: MapType.normal,
+          initialCameraPosition: _initPosition),
+      Positioned(
+        bottom: 35.0,
+        left: 4.0,
+        right: 4.0,
+        child: Card(
+          elevation: 8.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: (_propertyCardMap != null)
+              ? RetailPropertyItem(property: _propertyCardMap)
+              : Container(),
+        ),
+      ),
+    ]));
+
+    Widget buildPropertyList() {
+      if (_properties == null)
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      else
+        return IndexedStack(
+          index: _showList ? 0 : 1,
+          children: <Widget>[propertiesList, propertiesMaps],
+        );
+    }
 
     return Scaffold(
         appBar: AppBar(
           title: topAppBar,
         ),
-        body: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _properties == null ? 0 : _properties.take(5).length,
-            itemBuilder: (context, index) {
-              if (_properties == null)
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              else
-                return RetailPropertyItem(property: _properties[index]);
-            }));
+        body: buildPropertyList());
   }
 }
 
@@ -102,7 +169,7 @@ class RetailPropertyItem extends StatelessWidget {
               }))
             },
         child: Container(
-            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+            padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -117,16 +184,20 @@ class RetailPropertyItem extends StatelessWidget {
                           children: <Widget>[
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(4.0),
-                                child: Hero(
-                                    tag: "prop-${_property.id}",
-                                    child: CachedNetworkImage(
+                                child:
+                                    // Hero(
+                                    //     tag: "prop-${_property.id}",
+                                    //     child:
+                                    CachedNetworkImage(
                                         width: double.infinity,
                                         fit: BoxFit.fitWidth,
                                         imageUrl: _property.photoUrl,
                                         placeholder: (context, url) => Center(
                                             child: CircularProgressIndicator()),
                                         errorWidget: (context, url, error) =>
-                                            Icon(Icons.error)))),
+                                            Icon(Icons.error))
+                                // )
+                                ),
                             Positioned(
                                 bottom: 20,
                                 left: 0,

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "573101807e8ba7f07c5ba147",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/573101807e8ba7f07c5ba147_6aa2a1992daa40dc39cbdfee8c717379.jpg",
+    "address": "Aert van der Goesstraat 15",
+    "city": "Den Haag",
+    "price": "€ 2.500 p.m.",
+    "location": [52.0881377,4.2742989]
+  },
+  {
+    "id": "57b5940a5d47a7c079d44468",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/57b5940a5d47a7c079d44468_17cbaae990ff6da269af0dc023150b9a.JPG",
+    "address": "Alphons Diepenbrockhof 91",
+    "city": "Den Haag",
+    "price": "€ 37.500 p.j.",
+    "location": [52.0591878,4.2290301]
+  },
+  {
+    "id": "5be941764dbc43036b6ba458",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5be941764dbc43036b6ba458_aab461ece6ebf4c82df6ab3740e0b88d.JPG",
+    "address": "Baronie 26 A",
+    "city": "Alphen aan den Rijn",
+    "price": "€ 1.575 p.m.",
+    "location": [52.1346153,4.6474736]
+  },
+  {
+    "id": "5c46f861967af235bef63050",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5c46f861967af235bef63050_1e651235a71aa57775dc4a9f22d62695.jpg",
+    "address": "Boylestraat 35",
+    "city": "Den Haag",
+    "price": "€ 1.100 p.m.",
+    "location": [52.0717337,4.2721389]
+  },
+  {
+    "id": "5d0220ac85a6803c526b49b9",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5d0220ac85a6803c526b49b9_bd943edb25b0a43a4575df44be15e7d0.jpg",
+    "address": "Breestraat 83",
+    "city": "Leiden",
+    "price": "€ 2.300 p.m.",
+    "location": [52.1587819,4.4871242]
+  },
+  {
+    "id": "5d1a28090d286b6622d698a1",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5d1a28090d286b6622d698a1_9671bc16e7c3d2f856bed1831567e626.jpg",
+    "address": "Burgemeester Colijnstraat 22 D",
+    "city": "Boskoop",
+    "price": "€ 150 p.m2.p.j",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5d14790acd04424e9f7157a2",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5d14790acd04424e9f7157a2_8c70d6eb62a7e437e3e41a0d0bad873f.jpg",
+    "address": "Burgemeester Colijnstraat 22 D/E",
+    "city": "Boskoop",
+    "price": "€ 150 p.m2.p.j",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5d1a58be0d286b6622d7e2a2",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5d1a58be0d286b6622d7e2a2_d6859f4f4bd9f95753ddfd208c3fbeaa.jpg",
+    "address": "Burgemeester Colijnstraat 22 E",
+    "city": "Boskoop",
+    "price": "€ 150 p.m2.p.j",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5b924a00cbd186036434b222",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5b924a00cbd186036434b222_9706ba53517c94e5d4e5dc9dd16d7b58.png",
+    "address": "Centrumoever 14",
+    "city": "Roelofarendsveen",
+    "price": "€ 225 p.m2.p.j",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "581c47c2a3d8a202c49e3caa",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/581c47c2a3d8a202c49e3caa_acc4730288795d8660f31d067f46bf80.JPG",
+    "address": "Fluwelen Burgwal 1 D",
+    "city": "Den Haag",
+    "price": "€ 1.300 p.m.",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5c765b532317357aae4cb90e",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5c765b532317357aae4cb90e_d523375288a3dbd7dc9d8a42f2a1f200.JPG",
+    "address": "Gevers Deynootplein 155",
+    "city": "Den Haag",
+    "price": "€ 6.250 p.m.",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5a70e9e92a2d82039efecf73",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5a70e9e92a2d82039efecf73_d82af5765448e6f50c53efeda5c14602.jpg",
+    "address": "Graaf Willem II straat 20",
+    "city": "'s-Gravenzande",
+    "price": "€ 1.305 p.m.",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5ab127044d865203a588e417",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5ab127044d865203a588e417_30bc4e6a4461539a5cd3f5867f12588d.jpg",
+    "address": "Graaf Willem II straat 23",
+    "city": "'s-Gravenzande",
+    "price": "€ 2.175 p.m.",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5ab128154d865203a588e420",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5ab128154d865203a588e420_2a3d3634414c2aee85b59d63b48804c4.jpg",
+    "address": "Graaf Willem II straat 25",
+    "city": "'s-Gravenzande",
+    "price": "€ 2.320 p.m.",
+    "location": [52.0690814, 4.2777256]
+  },
+  {
+    "id": "5ab11a8b4d865203a588b02c",
+    "photoUrl": "http://storage.googleapis.com/s1media/360p/5ab11a8b4d865203a588b02c_cd2b527df05b474b1cc5936b67ca596a.jpg",
+    "address": "Graaf Willem II straat 8",
+    "city": "'s-Gravenzande",
+    "price": "€ 2.438 p.m.",
+    "location": [52.0690814, 4.2777256]
+  }
+]

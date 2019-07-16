@@ -94,8 +94,8 @@ class PropertyDetailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: topAppBar,
-      body: Container(
-        child: ListView(shrinkWrap: true, children: <Widget>[
+      body: Center(child: SingleChildScrollView(
+        child: Column(children: <Widget>[
           _makeImageCarousel(propertyDetails),
           Container(
               padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0),
@@ -172,7 +172,7 @@ class PropertyDetailsPage extends StatelessWidget {
                         initialCameraPosition: CameraPosition(
                             target: LatLng(propertyDetails.location[0],
                                 propertyDetails.location[1]),
-                            zoom: 15),
+                            zoom: 14.4746),
                         markers: {
                           Marker(
                             consumeTapEvents: true,
@@ -196,7 +196,7 @@ class PropertyDetailsPage extends StatelessWidget {
                     const SizedBox(height: 25.0),
                   ]))
         ]),
-      ),
+      )),
       bottomNavigationBar: new Container(
           height: 60,
           padding: const EdgeInsets.all(8),
@@ -208,8 +208,8 @@ class PropertyDetailsPage extends StatelessWidget {
             children: <Widget>[
               Container(
                 decoration: new BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: new BorderRadius.all(Radius.circular(4))),
+                    color: Colors.black,
+                    borderRadius: new BorderRadius.all(Radius.circular(4))),
                 padding:
                     const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
                 child: Row(
@@ -223,10 +223,8 @@ class PropertyDetailsPage extends StatelessWidget {
                       padding: const EdgeInsets.all(6),
                       alignment: Alignment.center,
                       child: Text("06-123456789",
-                          style: Theme.of(context)
-                              .textTheme
-                              .body2
-                              .copyWith(color: Colors.yellow[200], fontSize: 18)),
+                          style: Theme.of(context).textTheme.body2.copyWith(
+                              color: Colors.yellow[200], fontSize: 18)),
                       color: Colors.black,
                     ),
                   ],
