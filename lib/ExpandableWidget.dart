@@ -38,7 +38,7 @@ class _ExapandableWidgetState extends State<ExapandableWidget>
     WidgetsBinding.instance.addPostFrameCallback(_onBuildCompleted);
   }
 
-  ///Setting up the animation
+  //Setting up the animation
   Animation<double> prepareAnimations() {
     Animation curve = CurvedAnimation(
       parent: expandController,
