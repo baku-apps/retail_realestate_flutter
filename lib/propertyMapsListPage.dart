@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:retail_realestate_flutter/models/property.dart';
 import 'package:retail_realestate_flutter/propertyListItem.dart';
+import 'package:rxdart/rxdart.dart';
 
 class PropertyMapsListPage extends StatefulWidget {
   PropertyMapsListPage({Key key, this.properties}) : super(key: key);
@@ -48,24 +49,30 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
     };
 
     _slideController.addStatusListener(_statusListener);
+
+    onTapMarkerSubject.stream
+        .switchMap((p) => Observable.fromFuture(_goToMarkerDelegate()))
+        .listen((property) {
+      print("Updated maps camera!");
+    });
   }
 
-  Future<void> _goToMarker() async {
+  PublishSubject<Property> onTapMarkerSubject = PublishSubject<Property>();
+  int i = 0;
+
+  Future<void> Function() _goToMarkerDelegate;
+
+  Future<void> _goToMarker(double dx, double dy) async {
     final GoogleMapController controller = await _mapsController.future;
 
-    await Future.delayed(Duration(milliseconds: 200));
-    //await controller.animateCamera(CameraUpdate.newLatLng(latLng));
-    var scrollX = localX - (MediaQuery.of(context).size.width / 2);
-    var scrollY = localY - (MediaQuery.of(context).size.height / 4);
+    var scrollX = dx - (MediaQuery.of(context).size.width / 2);
+    var scrollY = dy - (MediaQuery.of(context).size.height / 4);
 
-    controller.animateCamera(CameraUpdate.scrollBy(scrollX, scrollY));
+    await controller.animateCamera(CameraUpdate.scrollBy(scrollX, scrollY));
   }
 
   @override
   Widget build(BuildContext context) {
-    final h = (MediaQuery.of(context).size.height / 2);
-    final w = (MediaQuery.of(context).size.width / 2);
-
     final CameraPosition _initPosition = CameraPosition(
       target: LatLng(52.0690814, 4.2777256),
       zoom: 12.73,
@@ -76,12 +83,14 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
         : widget.properties.map((p) {
             return Marker(
                 onTap: () async {
-                  await _goToMarker();
+                  print("${i++}: MARKER");
 
                   setState(() {
                     _propertyCardMap = p;
                     _slideController.forward();
                   });
+                  //await Future.delayed(Duration(milliseconds: 500));
+                  onTapMarkerSubject.add(p);
                 },
                 consumeTapEvents: true,
                 markerId: MarkerId(p.id),
@@ -120,14 +129,19 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
 
     return GestureDetector(
         onTapDown: (details) {
-          var newOffset = Offset.fromDirection(
-              details.localPosition.direction, details.localPosition.distance);
-          localX = newOffset.dx;
-          localY = newOffset.dy;
+          // var newOffset = Offset.fromDirection(
+          //     details.localPosition.direction, details.localPosition.distance);
+          // localX = newOffset.dx;
+          // localY = newOffset.dy;
+
+          var dx = details.globalPosition.dx;
+          var dy = details.globalPosition.dy;
+
+          _goToMarkerDelegate = () async => await _goToMarker(
+              details.localPosition.dx, details.localPosition.dy);
+
+          print("${i++}: GESTUREDETECTOR --> $dx - $dy");
         },
         child: propertiesMaps);
   }
-
-  double localX = 0;
-  double localY = 0;
 }
