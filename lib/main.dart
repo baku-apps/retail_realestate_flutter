@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:retail_realestate_flutter/propertyListPage.dart';
-
-import 'propertyMapsListPage.dart';
+import 'package:retail_realestate_flutter/ui/listView/propertyListPage.dart';
 
 void main() => {runApp(RetailRealestateApp())};
 

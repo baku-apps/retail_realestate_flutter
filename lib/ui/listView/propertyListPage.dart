@@ -1,15 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:retail_realestate_flutter/propertyDetailPage.dart';
-import 'package:retail_realestate_flutter/propertyMapsListPage.dart';
+import 'package:retail_realestate_flutter/models/property.dart';
+import 'package:retail_realestate_flutter/models/propertyDetails.dart';
+import 'package:retail_realestate_flutter/ui/detailView/propertyDetailPage.dart';
 import 'package:retail_realestate_flutter/services/propertyService.dart';
-
-// Contains HTML parsers to generate a Document object
-//import 'package:html/dom.dart' as dom; // Contains DOM related classes for extracting data from elements
-
-import 'models/property.dart';
-import 'models/propertyDetails.dart';
+import 'package:retail_realestate_flutter/ui/listView/propertyMapsListPage.dart';
 
 import 'propertyListItem.dart';
 
@@ -85,9 +81,8 @@ class _PropertyListPageState extends State<PropertyListPage> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: topAppBar,
-        ),
+        appBar: topAppBar,
+        
         body: buildPropertyList());
   }
 }
