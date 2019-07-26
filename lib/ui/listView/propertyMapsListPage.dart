@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
-import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:retail_realestate_flutter/models/property.dart';
-import 'package:retail_realestate_flutter/propertyListItem.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:retail_realestate_flutter/ui/listView/propertyListItem.dart';
 
 class PropertyMapsListPage extends StatefulWidget {
   PropertyMapsListPage({Key key, this.properties}) : super(key: key);

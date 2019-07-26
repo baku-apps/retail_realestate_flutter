@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:retail_realestate_flutter/helpers/mapHelpers.dart';
 import 'package:retail_realestate_flutter/models/propertyDetails.dart';
-import 'package:retail_realestate_flutter/propertyGeneralInfo.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'ExpandableWidget.dart';
+import 'package:retail_realestate_flutter/ui/detailView/DetailMapView.dart';
+import 'package:retail_realestate_flutter/ui/widgets/ExpandableWidget.dart';
+import 'package:retail_realestate_flutter/ui/widgets/propertyGeneralInfo.dart';
 
 class PropertyDetailsPage extends StatelessWidget {
   final PropertyDetails propertyDetails;
@@ -94,7 +94,8 @@ class PropertyDetailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: topAppBar,
-      body: Center(child: SingleChildScrollView(
+      body: Center(
+          child: SingleChildScrollView(
         child: Column(children: <Widget>[
           _makeImageCarousel(propertyDetails),
           Container(
@@ -166,9 +167,10 @@ class PropertyDetailsPage extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       height: 300,
                       child: GoogleMap(
-                        onTap: (loc) => MapHelpers.openMap(
-                            propertyDetails.location[0],
-                            propertyDetails.location[1]),
+                        onTap: (loc) => Navigator.of(context)
+                            .push(MaterialPageRoute<Null>(builder: (context) {
+                          return DetailMapsView(property: propertyDetails);
+                        })),
                         initialCameraPosition: CameraPosition(
                             target: LatLng(propertyDetails.location[0],
                                 propertyDetails.location[1]),
@@ -176,9 +178,10 @@ class PropertyDetailsPage extends StatelessWidget {
                         markers: {
                           Marker(
                             consumeTapEvents: true,
-                            onTap: () => MapHelpers.openMap(
-                                propertyDetails.location[0],
-                                propertyDetails.location[1]),
+                            onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute<Null>(builder: (context) {
+                              return DetailMapsView(property: propertyDetails);
+                            })),
                             markerId: MarkerId(propertyDetails.id),
                             position: LatLng(propertyDetails.location[0],
                                 propertyDetails.location[1]),

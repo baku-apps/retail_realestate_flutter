@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'models/property.dart';
+import 'package:retail_realestate_flutter/models/property.dart';
 
 class PropertyGeneralInfo extends StatelessWidget {
   const PropertyGeneralInfo({

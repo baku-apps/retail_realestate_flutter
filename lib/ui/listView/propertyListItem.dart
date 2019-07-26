@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:retail_realestate_flutter/propertyDetailPage.dart';
-import 'package:retail_realestate_flutter/propertyGeneralInfo.dart';
-
-import 'models/property.dart';
-import 'models/propertyDetails.dart';
+import 'package:retail_realestate_flutter/models/property.dart';
+import 'package:retail_realestate_flutter/models/propertyDetails.dart';
+import 'package:retail_realestate_flutter/ui/detailView/propertyDetailPage.dart';
+import 'package:retail_realestate_flutter/ui/widgets/propertyGeneralInfo.dart';
 
 class RetailPropertyItem extends StatelessWidget {
   const RetailPropertyItem({
