@@ -27,6 +27,7 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
   Property _propertyCardMap;
 
   Null Function(AnimationStatus status) _statusListener;
+  Size _mapSize = Size(0, 0);
 
   @override
   void initState() {
@@ -54,12 +55,6 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
 
     _slideController.addStatusListener(_statusListener);
 
-    onTapMarkerSubject.stream
-        .switchMap((p) => Observable.fromFuture(_goToMarker(p.location[0], p.location[1])))
-        .listen((_) {
-      print("Updated maps camera!");
-    });
-
     WidgetsBinding.instance.addPostFrameCallback(_getSizes);
   }
 
@@ -69,16 +64,10 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
     _mapSize = renderBoxRed.size;
   }
 
-  Size _mapSize = Size(0, 0);
-
-  PublishSubject<Property> onTapMarkerSubject = PublishSubject<Property>();
-  int i = 0;
-
-  Future<void> Function() _goToMarkerDelegate;
-
   Future<void> _goToMarker(double lat, double lng) async {
     final GoogleMapController controller = await _mapsController.future;
 
+    //map screen size
     var mapHeight = _mapSize.height;
     var mapWidth = _mapSize.width;
 
@@ -95,6 +84,7 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
     var scaleX = mapWidth / latRange;
     var scaleY = mapHeight / lngRange;
 
+    //scroll to target screen coordinates
     var targetX = (mapWidth / 2);
     var targetY = (mapHeight / 4);
 
@@ -102,6 +92,7 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
     var markerX = (swBounds.longitude - lng).abs() * scaleX;
     var markerY = (neBounds.latitude -lat).abs() * scaleY;
 
+    //scroll by coordinates
     var deltaX = markerX - targetX;
     var deltaY = markerY - targetY;
 
@@ -120,14 +111,11 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
         : widget.properties.map((p) {
             return Marker(
                 onTap: () async {
-                  print("${i++}: MARKER");
-
                   setState(() {
                     _propertyCardMap = p;
                     _slideController.forward();
                   });
-                  //await Future.delayed(Duration(milliseconds: 500));
-                  //onTapMarkerSubject.add(p);
+
                   await _goToMarker(p.location[0], p.location[1]);
                 },
                 consumeTapEvents: true,
@@ -167,22 +155,5 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
     ]));
 
     return propertiesMaps;
-    
-    // GestureDetector(
-    //     onTapDown: (details) {
-    //       // var newOffset = Offset.fromDirection(
-    //       //     details.localPosition.direction, details.localPosition.distance);
-    //       // localX = newOffset.dx;
-    //       // localY = newOffset.dy;
-
-    //       // var dx = details.globalPosition.dx;
-    //       // var dy = details.globalPosition.dy;
-
-    //       // _goToMarkerDelegate = () async => await _goToMarker(
-    //       //     details.localPosition.dx, details.localPosition.dy);
-
-    //       // print("${i++}: GESTUREDETECTOR --> $dx - $dy");
-    //     },
-    //     child: propertiesMaps);
   }
 }
