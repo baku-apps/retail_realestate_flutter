@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,7 +17,9 @@ class PropertyMapsListPage extends StatefulWidget {
 }
 
 class _PropertyMapsListPageState extends State<PropertyMapsListPage>
-    with SingleTickerProviderStateMixin {
+    with
+        AfterLayoutMixin<PropertyMapsListPage>,
+        SingleTickerProviderStateMixin {
   AnimationController _slideController;
   Animation<Offset> _animation;
 
@@ -52,14 +55,17 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
     };
 
     _slideController.addStatusListener(_statusListener);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback(_getSizes);
+  @override
+  void afterFirstLayout(BuildContext context) {
+    _mapSize = _getSizes(_mapKey);
   }
 
   //user pub to get size after build https://pub.dartlang.org/packages/after_layout
-  _getSizes(_) {
-    final RenderBox renderBoxRed = _mapKey.currentContext.findRenderObject();
-    _mapSize = renderBoxRed.size;
+  Size _getSizes(GlobalKey globalKey) {
+    final RenderBox renderBox = globalKey.currentContext.findRenderObject();
+    return renderBox.size;
   }
 
   Future<void> _goToMarker(double lat, double lng) async {
@@ -88,7 +94,7 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
 
     //screen coordinates of maker
     var markerX = (swBounds.longitude - lng).abs() * scaleX;
-    var markerY = (neBounds.latitude -lat).abs() * scaleY;
+    var markerY = (neBounds.latitude - lat).abs() * scaleY;
 
     //scroll by coordinates
     var deltaX = markerX - targetX;
@@ -124,7 +130,7 @@ class _PropertyMapsListPageState extends State<PropertyMapsListPage>
     final propertiesMaps = Container(
         child: Stack(children: <Widget>[
       GoogleMap(
-        key: _mapKey,
+          key: _mapKey,
           onTap: (latLang) => setState(() {
                 _slideController.reverse();
               }),

@@ -6,10 +6,13 @@ We have not included the repository (json file) due to sensitive content. Will c
 
 ## Features
 
-- List of properties
+- ListView of properties
 - "Automatic" deserialization of json in Dart
 - Details page
 - Image carousel
+- Google maps
+- Street view
+- Expandable views
 
 ## Getting Started
 

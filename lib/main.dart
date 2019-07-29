@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:retail_realestate_flutter/ui/listView/propertyListPage.dart';
 
-void main() => {runApp(RetailRealestateApp())};
+void main() => { runApp(RetailRealestateApp()) };
 
 class RetailRealestateApp extends StatelessWidget {
   // This widget is the root of your application.
