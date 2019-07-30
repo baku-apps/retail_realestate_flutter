@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:retail_realestate_flutter/models/property.dart';
@@ -6,6 +5,7 @@ import 'package:retail_realestate_flutter/models/propertyDetails.dart';
 import 'package:retail_realestate_flutter/ui/detailView/propertyDetailPage.dart';
 import 'package:retail_realestate_flutter/services/propertyService.dart';
 import 'package:retail_realestate_flutter/ui/listView/propertyMapsListPage.dart';
+import 'package:retail_realestate_flutter/ui/widgets/tabBarWidget.dart';
 
 import 'propertyListItem.dart';
 
@@ -41,7 +41,6 @@ class _PropertyListPageState extends State<PropertyListPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final propertiesMaps = PropertyMapsListPage(properties: _properties);
 
     final propertiesList = ListView.builder(
@@ -54,19 +53,20 @@ class _PropertyListPageState extends State<PropertyListPage> {
     final topAppBar = AppBar(
       elevation: 0.1,
       centerTitle: true,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black.withOpacity(0.75),
       title: Text(widget.title),
-      leading: Image.asset(
-        "images/logo_appbar.png",
-        filterQuality: FilterQuality.high,
-        fit: BoxFit.fitWidth,
-      ),
+      leading: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Image.asset(
+            "images/logo_appbar.png",
+            filterQuality: FilterQuality.high,
+            fit: BoxFit.fitWidth,
+          )),
       actions: [
         IconButton(icon: Icon(Icons.list), onPressed: () => _setShowList(true)),
         IconButton(icon: Icon(Icons.map), onPressed: () => _setShowList(false))
       ],
     );
-
 
     Widget buildPropertyList() {
       if (_properties == null)
@@ -82,7 +82,7 @@ class _PropertyListPageState extends State<PropertyListPage> {
 
     return Scaffold(
         appBar: topAppBar,
-        
+        bottomNavigationBar: new TabBarWidget(tabIndex: 0),
         body: buildPropertyList());
   }
 }

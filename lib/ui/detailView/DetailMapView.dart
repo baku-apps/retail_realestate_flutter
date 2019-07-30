@@ -36,18 +36,18 @@ class _DetailMapsViewState extends State<DetailMapsView> {
 
   String _panoId;
 
-  Future<String> getPanoId(double lat, double lng) async {
-    var response = await http.get(
-        'https://maps.googleapis.com/maps/api/streetview/metadata?location=$lat,$lng&size=400x600&key=API_KEY');
+  // Future<String> getPanoId(double lat, double lng) async {
+  //   var response = await http.get(
+  //       'https://maps.googleapis.com/maps/api/streetview/metadata?location=$lat,$lng&size=400x600&key=API_KEY');
 
-    if (response.statusCode == 200) {
-      var pId = json.decode(response.body)['pano_id'];
-      return pId;
-    } else {
-      return "";
-      // handle a failed request
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     var pId = json.decode(response.body)['pano_id'];
+  //     return pId;
+  //   } else {
+  //     return "";
+  //     // handle a failed request
+  //   }
+  // }
 
   List<double> _location = List<double>(2);
 
@@ -64,7 +64,6 @@ class _DetailMapsViewState extends State<DetailMapsView> {
 
   @override
   Widget build(BuildContext context) {
-
     final CameraPosition _initPosition = CameraPosition(
       target: LatLng(_location[0], _location[1]),
       zoom: 12.73,
@@ -86,9 +85,9 @@ class _DetailMapsViewState extends State<DetailMapsView> {
         '?api=1' +
         '&map_action=pano' +
         '&viewpoint=${_location[0]},${_location[1]}'
-            //'&viewpoint=52.1587819,4.4884253'
-            '&pano=$_panoId'
-            '&heading=151.78' +
+        //'&viewpoint=52.1587819,4.4884253'
+        // '&pano=$_panoId'
+        '&heading=151.78' +
         '&pitch=-0.76' +
         '&source=outdoor';
     //'&key=$apiKey';
@@ -106,9 +105,9 @@ class _DetailMapsViewState extends State<DetailMapsView> {
         List<Widget>.generate(segmentsMap.values.length, (index) {
           return Container(
             color: Colors.transparent,
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(6),
             child: Text(
-              segmentsMap.values.toList()[index].toString().toUpperCase(),
+              segmentsMap.values.toList()[index].toString(),
               style: Theme.of(context).textTheme.subtitle.copyWith(
                   color: (_segmentSelectedIndex == index)
                       ? Colors.black

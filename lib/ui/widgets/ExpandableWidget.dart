@@ -92,8 +92,8 @@ class _ExapandableWidgetState extends State<ExapandableWidget>
                               Colors.white,
                             ],
                             stops: [
-                              0.70,  
-                              1                              
+                              0.80,  
+                              0.9                              
                             ])),
                   ),
                 ],
